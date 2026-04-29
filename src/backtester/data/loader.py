@@ -11,10 +11,24 @@ def load_ticker(ticker, st, en):
     if isinstance(data.columns, pd.MultiIndex):
         data.columns = data.columns.droplevel(1)
     
-    # Make column names lowercase so we don't have to type "Close" everywhere
-    data.columns = [name.lower() for name in data.columns]
     return data
 
-"""yf.download: returns a pandas DataFrame with daily prices and volume
+"""yf.download: returns a pandas DataFrame with OHLCV data for each day
    auto_adjust = True : makes adjusted close happen
    progress = False : just hides the progress bar, cleaner output"""
+   
+   
+#loading multiple tickers   
+def load_multiple_tickers(tickers , st, en):
+    #download data for a list of stocks
+    #tickers is a list
+    """return a dictionary: {ticker_name: DataFrame containing OHLCV data for each day}"""
+    
+    result = {} 
+    """we call our prev function for each item of tickers list"""
+    for ticker in tickers:
+       print(f"Loading {ticker} ...")
+       df = load_ticker(ticker, st, en)
+       result[ticker] = df
+    
+    return result;    
