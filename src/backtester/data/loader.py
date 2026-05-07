@@ -8,6 +8,11 @@ def load_ticker(ticker, st, en):
        
     data = yf.download(ticker, start = st, end = en, auto_adjust = True, progress = False)
     # If yfinance returned nested columns, flatten them
+    
+    
+    if data.empty:
+        raise ValueError(f"No data returned for {ticker}")
+
     if isinstance(data.columns, pd.MultiIndex):
         data.columns = data.columns.droplevel(1)
     
@@ -71,9 +76,32 @@ def load_multiple_tickers(tickers , st, en):
     result = {} 
     """we call our prev function for each item of tickers list"""
     for ticker in tickers:
-       print(f"Loading {ticker} ...")
-       df = load_ticker_with_cache(ticker, st, en) #updated load_ticker with cache function
-       result[ticker] = df
+      try:
+          print(f"Loading {ticker} ...")
+          df = load_ticker_with_cache(ticker, st, en) #updated load_ticker with cache function
+          result[ticker] = df
+      except ValueError as e:
+          print(f"Skipping {ticker}: {e}")    
     
     return result;    
      
+def check_data_quality(prices):
+    """"Print a summary of how clean data is"""
+    
+    print(f"Shape: {prices.shape}")     
+    print(f"Date Range: {prices.index.min().date()} to {prices.index.max().date()}")
+    
+    total_missing = prices.isna().sum().sum()
+    total_cells = prices.size #prices.size — total number of cells (rows × columns). Used to compute the percentage of missing values.
+    print(f"Missing values: {total_missing} ({total_missing / total_cells:.2%})")
+    
+    empty_stocks = prices.columns[prices.isna().all()]
+    print(f"Stocks with no data: {len(empty_stocks)}")
+    if len(empty_stocks) > 0:
+        print(f"  → {list(empty_stocks)}")
+    
+    non_positive = (prices <= 0).sum().sum()
+    print(f"Non-positive prices: {non_positive}")
+    
+    duplicates = prices.index.duplicated().sum()
+    print(f"Duplicate dates: {duplicates}")
