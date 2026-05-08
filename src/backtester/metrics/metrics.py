@@ -39,3 +39,18 @@ def annualized_returns_CAGR(returns, periods_per_year = 252):
     
     return total_growth**(1/num_years) - 1
     
+    
+def annualized_volatility(returns, periods_per_year = 252):
+     """Compute the annualized standard deviation of returns.
+    
+    returns: a pandas Series of daily returns.
+    periods_per_year: 252 for daily data (trading days in a year).
+    
+    Returns a single number. 0.20 means 20% annual volatility.
+    """
+     returns_clean = returns.dropna()
+     daily_std = returns_clean.std()
+     
+     return daily_std * np.sqrt(periods_per_year)
+     
+       

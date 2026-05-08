@@ -26,6 +26,11 @@ Week 0: Environment setup — in progress.
 - Cross-checked function results against manual computation. Matched.
 - Realization: annualization makes vastly different time periods comparable
 
+### Week 2, Day 3
+
+- Built annualized_volatility function (std of returns * sqrt(252))
+- Realization: looking at returns alone is misleading. The same return with half the volatility is a much better investment.
+
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).
