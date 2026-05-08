@@ -17,6 +17,15 @@ Week 0: Environment setup — in progress.
 - Plotted Reliance prices and returns side by side. Prices trend; returns look like noise.
 - Realization: the chart of returns is humbling — most days are tiny moves; the "interesting" stuff is rare.
 
+### Week 2, Day 2
+- Wrote total_return: (1 + r).prod() - 1 — uses compounding, not summing
+- Learned: returns multiply over time, not add. +10% then -10% loses you 1%, not 0.
+- Wrote annualized_return: total_growth ^ (1/years) - 1 — also called CAGR
+- Reliance: ~X% total over 5 years, ~Y% annualized
+- Top Nifty 50 performer: [stock] at Z% annualized — surprisingly large gap from worst
+- Cross-checked function results against manual computation. Matched.
+- Realization: annualization makes vastly different time periods comparable
+
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).
