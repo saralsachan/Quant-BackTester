@@ -53,4 +53,20 @@ def annualized_volatility(returns, periods_per_year = 252):
      
      return daily_std * np.sqrt(periods_per_year)
      
-       
+
+def sharpe_ratio(returns, risk_free_rate=0.06, periods_per_year=252):
+    """Compute the annualized Sharpe ratio.
+    
+    returns: a pandas Series of daily returns.
+    risk_free_rate: annual risk-free rate (default 6%, roughly Indian T-bill yield).
+    periods_per_year: 252 for daily data.
+    
+    Returns a single number. Higher is better. 1.0+ is good.
+    """
+    annual_return = annualized_returns_CAGR(returns)
+    annual_volatility = annualized_volatility(returns)
+    
+    if(annual_volatility == 0):  # guard against division by zero. If volatility is somehow exactly zero (e.g., a flat-line price series in test data), return 0 instead of crashing. Real stocks never have zero volatility, but defensive coding catches edge cases.
+        return 0
+    
+    return (annual_return - risk_free_rate) / annual_volatility       

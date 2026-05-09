@@ -31,6 +31,12 @@ Week 0: Environment setup — in progress.
 - Built annualized_volatility function (std of returns * sqrt(252))
 - Realization: looking at returns alone is misleading. The same return with half the volatility is a much better investment.
 
+### Week 2, Day 4
+
+- Built sharpe ratio function which computer how much extra return (compared to risk free returns) you get per unit risk.
+- Tested it on Reialnce and various other stocks.
+- Analysed portfolio of a few stocks with sharpe, volatility and returns.
+
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).
