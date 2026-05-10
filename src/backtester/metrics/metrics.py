@@ -93,3 +93,19 @@ def max_drawdown(returns):
      drawdown = (equity_curve - running_peak) / running_peak # element-wise subtraction and division. Pandas does this for the whole series at once. The result is the drawdown at each day.
      
      return drawdown.min()
+ 
+"""By far we have been calling various functions separately to evaluate a return series
+    let's build a single function that returns the entire analysis """
+    
+def performance_report(returns, risk_free_rate = 0.06):
+    
+    """Returns a dictionary with all the key metrics."""
+    
+    return{
+        "total_return": total_returns(returns),
+        "annualized_return": annualized_returns_CAGR(returns),
+        "annualized_volatility": annualized_volatility(returns),
+        "sharpe_ratio": sharpe_ratio(returns, risk_free_rate=risk_free_rate),
+        "max_drawdown": max_drawdown(returns)
+    }
+     

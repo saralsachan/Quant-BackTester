@@ -37,10 +37,13 @@ Week 0: Environment setup — in progress.
 - Tested it on Reialnce and various other stocks.
 - Analysed portfolio of a few stocks with sharpe, volatility and returns.
 
-### Week 3, Day 5
+### Week 2, Day 5
 
 - Built maxDropDown Function that tells the maximum peak-to-trough loss in the journey
 - Tested it on various stocks
+### Week 2, Day 6
+- Built a function that computes the report of stock's returns. 
+- Consolidated the metric sfucntions into a single function to save time and minimize redundency of calling each and every metric function.
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).
