@@ -70,3 +70,26 @@ def sharpe_ratio(returns, risk_free_rate=0.06, periods_per_year=252):
         return 0
     
     return (annual_return - risk_free_rate) / annual_volatility       
+
+def max_drawdown(returns):
+     """Compute the maximum peak-to-trough drawdown.
+    
+    returns: a pandas Series of daily returns.
+    
+    Returns a single number, always <= 0.   -0.30 means a 30% drawdown.
+    """
+     returns_clean = returns.dropna()
+     
+     #building the equity curve (cumulative product of 1+r)
+     
+     equity_curve = (1+returns_clean).cumprod()
+     
+      #running peak for each day
+     
+     running_peak = equity_curve.cummax()
+     
+     #drwadown each day
+     
+     drawdown = (equity_curve - running_peak) / running_peak # element-wise subtraction and division. Pandas does this for the whole series at once. The result is the drawdown at each day.
+     
+     return drawdown.min()
