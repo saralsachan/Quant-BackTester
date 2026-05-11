@@ -43,7 +43,12 @@ Week 0: Environment setup — in progress.
 - Tested it on various stocks
 ### Week 2, Day 6
 - Built a function that computes the report of stock's returns. 
-- Consolidated the metric sfucntions into a single function to save time and minimize redundency of calling each and every metric function.
+- Consolidated the metric functions into a single function to save time and minimize redundency of calling each and every metric function.
+
+### Week 3, Day 1
+- Built strategy function of simple buy and hold
+- Build a function that would return the strategy_returns on a given daily_return series of stock
+- Tested the functions and got identical performane report of Reliance stock as in week2,day6
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).
