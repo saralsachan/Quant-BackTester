@@ -49,6 +49,9 @@ Week 0: Environment setup — in progress.
 - Built strategy function of simple buy and hold
 - Build a function that would return the strategy_returns on a given daily_return series of stock
 - Tested the functions and got identical performane report of Reliance stock as in week2,day6
+### Week 3, Day 2
+- Built moving_average_crossover strategy
+- Compared it to buy and hold strategy
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).

@@ -27,3 +27,28 @@ def buy_and_hold(prices):
     
     positions = pd.Series(1, index = prices.index)
     return positions
+
+def moving_average_crossover(prices, short_window = 50, long_window = 200):
+    
+    """Moving average crossover: be invested when short MA > long MA.
+    
+    prices: a Series of daily prices.
+    short_window: lookback for the short moving average (default 50 days).
+    long_window: lookback for the long moving average (default 200 days).
+    
+    Returns a positions Series of 0s and 1s.
+    """
+    #computing the two moving averages
+    
+    """.rolling(window=50) — pandas creates a "rolling window" object. It says: "for each row, give me the previous 50 rows."""
+    
+    short_MA = prices.rolling(window = short_window).mean()
+    long_MA = prices.rolling(window = long_window).mean()
+    
+    positions = (short_MA>long_MA).astype(float) #short_MA > long_MA return a series of true/false->convert to 0 and 1
+    
+    # Set positions to NaN where either MA isn't yet available
+    positions[short_MA.isna() | long_MA.isna()] = float("nan")
+    
+    return positions #series of 0 and 1 and NaN's
+    
