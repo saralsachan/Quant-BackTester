@@ -51,4 +51,39 @@ def moving_average_crossover(prices, short_window = 50, long_window = 200):
     positions[short_MA.isna() | long_MA.isna()] = float("nan")
     
     return positions #series of 0 and 1 and NaN's
+
+"""MULTI-STOCK MOMENTUM STRATEGY"""
+def momentum_signal(prices, lookback_months=12, top_n=5):
+    """Momentum: each month, hold the top N stocks by trailing return.
+    
+    prices: a DataFrame of prices, one column per stock, indexed by date.
+    lookback_months: how far back to measure performance (default 12 months).
+    top_n: how many top performers to hold (default 5).
+    
+    Returns a DataFrame of positions, one column per stock.
+    Each row sums to 1 (when invested) or 0 (during warmup).
+    """
+    # Resample to month-end prices: one row per month
+    monthly_prices = prices.resample("ME").last()
+    
+    # Compute trailing N-month returns for each stock
+    monthly_returns = monthly_prices.pct_change(lookback_months)
+    
+    # Build positions DataFrame (one row per month, one column per stock)
+    monthly_positions = pd.DataFrame(0.0, index=monthly_returns.index, columns=prices.columns)
+    
+    for date in monthly_returns.index:
+        row = monthly_returns.loc[date]
+        # Skip rows where we don't have enough history
+        if row.isna().all():
+            continue
+        # Pick the top N stocks by return
+        top_stocks = row.nlargest(top_n).index
+        # Equal-weight them
+        monthly_positions.loc[date, top_stocks] = 1.0 / top_n
+    
+    # Reindex to daily and forward-fill (hold positions until next rebalance)
+    daily_positions = monthly_positions.reindex(prices.index, method="ffill")
+    
+    return daily_positions
     
