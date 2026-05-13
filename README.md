@@ -52,6 +52,12 @@ Week 0: Environment setup — in progress.
 ### Week 3, Day 2
 - Built moving_average_crossover strategy
 - Compared it to buy and hold strategy
+
+### Week 3 , Day 3
+- Built muilti stock momentum strategy
+- Tested it for top 5 stocks based on their past performancecs of 1 year
+- Compared it with the previous written strategies
+
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).
