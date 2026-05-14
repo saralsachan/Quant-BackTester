@@ -58,6 +58,9 @@ Week 0: Environment setup — in progress.
 - Tested it for top 5 stocks based on their past performancecs of 1 year
 - Compared it with the previous written strategies
 
+### Week 4, Day 1
+- Build computes_trades()- gives daily turnover(absolute change in position)
+- Works for both, single-stock(Series) and multi-stock (DataFrame) inputs
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).

@@ -1,0 +1,5 @@
+,total_return,annualized_return,annualized_volatility,sharpe_ratio,max_drawdown
+Buy & Hold Reliance,0.7856,0.1255,0.2974,0.2201,-0.4408
+Equal-weight basket,9.2066,0.2188,0.1623,0.9789,-0.38
+MA Crossover Reliance,0.1218,0.0283,0.2197,-0.1442,-0.246
+Momentum top-5,5.2462,0.1688,0.2218,0.4907,-0.4354

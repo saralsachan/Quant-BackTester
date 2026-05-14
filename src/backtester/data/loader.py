@@ -26,30 +26,49 @@ def load_ticker(ticker, st, en):
 import os
 
 def load_ticker_with_cache(ticker, start, end):
-    """Load a ticker, using a saved file if we've downloaded it before."""
+    """Load a ticker, using cached data only if it covers the requested range."""
     
-    # Make sure the cache folder exists
-   # Get the path to the project root, no matter where the script is called from
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    # Build the cache path (absolute, based on this file's location)
+    this_file = os.path.abspath(__file__)
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(this_file))))
     cache_folder = os.path.join(project_root, "data", "raw")
     os.makedirs(cache_folder, exist_ok=True)
     
-    # Build the filename for this ticker
-    # Replace dots with underscores so "RELIANCE.NS" becomes "RELIANCE_NS.parquet"
     safe_name = ticker.replace(".", "_")
-    cache_file = f"{cache_folder}/{safe_name}.parquet"
+    cache_file = os.path.join(cache_folder, f"{safe_name}.parquet")
     
-    # If we already have it saved, just read from disk
+    requested_start = pd.Timestamp(start)
+    requested_end = pd.Timestamp(end)
+    
+    # If cache file exists, check if it actually covers what we need
     if os.path.exists(cache_file):
-        print(f"Loading {ticker} from cache")
-        return pd.read_parquet(cache_file)
+        cached = pd.read_parquet(cache_file)
+        
+        if len(cached) > 0:
+            cached_start = cached.index.min()
+            cached_end = cached.index.max()
+            
+            # Cache is usable if it spans the requested range
+            covers_start = cached_start <= requested_start
+            covers_end = cached_end >= requested_end
+            
+            if covers_start and covers_end:
+                print(f"Loading {ticker} from cache ({cached_start.date()} to {cached_end.date()})")
+                return cached.loc[start:end]
+            else:
+                print(f"Cache for {ticker} doesn't cover requested range:")
+                print(f"  Cached:    {cached_start.date()} to {cached_end.date()}")
+                print(f"  Requested: {requested_start.date()} to {requested_end.date()}")
+                print(f"  Re-downloading...")
     
-    # Otherwise, download and save it
+    # Download fresh — and download a buffer beyond the request, so future requests
+    # for slightly different ranges can still use the cache
     print(f"Downloading {ticker}")
     df = load_ticker(ticker, start, end)
     df.to_parquet(cache_file)
-    return df 
- 
+    return df
+
+
 """GETTING CLOSE PRICES in a single DataFrame for different stocks""" 
 def get_close_prices(data_dict):
    """Take a dictionary of DataFrames and return one DataFrame with close prices.

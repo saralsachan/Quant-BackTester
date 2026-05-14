@@ -9,7 +9,7 @@ from backtester.data.loader import load_ticker, get_close_prices
 def test_load_ticker_returns_data():
     df = load_ticker("RELIANCE.NS", "2024-01-01", "2024-06-30")
     assert len(df) > 0
-    assert "close" in df.columns
+    assert "Close" in df.columns
 
 
 def test_get_close_prices_returns_one_column_per_stock():
