@@ -21,4 +21,26 @@ def compute_trades(positions):
         return position_changes.abs()
     
 
+def compute_costs(positions, cost_per_trade=0.0015):
+    """Compute the cost of trading each day.
     
+    positions: Series (single stock) or DataFrame (multi-stock) of daily positions.
+    cost_per_trade: cost as a fraction of trade size (default 0.15%).
+    
+    Returns a Series of daily costs (as fractions of portfolio value).
+    """
+    trades = compute_trades(positions)
+    return trades * cost_per_trade    
+
+def apply_costs_to_returns(gross_returns, positions, cost_per_trade=0.0015):
+    """Subtract trading costs from gross strategy returns.
+    
+    gross_returns: Series of strategy returns BEFORE costs.
+    positions: the positions that produced those returns.
+    cost_per_trade: cost as a fraction of trade size.
+    
+    Returns the net strategy returns AFTER costs.
+    """
+    costs = compute_costs(positions, cost_per_trade)
+    
+    return gross_returns - costs

@@ -61,6 +61,11 @@ Week 0: Environment setup — in progress.
 ### Week 4, Day 1
 - Build computes_trades()- gives daily turnover(absolute change in position)
 - Works for both, single-stock(Series) and multi-stock (DataFrame) inputs
+
+### Week 4, Day 2
+- Built cost modelling- computed cost and applied cost to gross returns
+- Tested cost model over momentum strategy and found actual returns linearly fall with increasing cost
+
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).
