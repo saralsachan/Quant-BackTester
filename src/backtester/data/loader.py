@@ -83,9 +83,6 @@ def get_close_prices(data_dict):
       
    return pd.DataFrame(close_prices)   
     
-    
-    
-   
 #loading multiple tickers   
 def load_multiple_tickers(tickers , st, en):
     #download data for a list of stocks

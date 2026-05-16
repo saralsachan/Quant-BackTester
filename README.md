@@ -66,6 +66,10 @@ Week 0: Environment setup — in progress.
 - Built cost modelling- computed cost and applied cost to gross returns
 - Tested cost model over momentum strategy and found actual returns linearly fall with increasing cost
 
+### Week4, Day 3
+- Applied cost to all other 4 strategies
+- Reported gross_returns and net_returns along with sharpe ratios, max drwadowns, cost_drags of each strategy
+
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).

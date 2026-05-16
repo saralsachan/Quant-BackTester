@@ -1,0 +1,5 @@
+,gross_return,net_return,cost_drag,gross_sharpe,net_sharpe,net_max_dd
+Buy & Hold Reliance,0.2079,0.2079,0.0,0.5322,0.5322,-0.4509
+Equal-weight basket,0.1954,0.1954,0.0,0.8259,0.8259,-0.3755
+MA Crossover Reliance,0.1161,0.1138,0.0022,0.2243,0.2154,-0.4559
+Momentum top-5,0.1816,0.1702,0.0114,0.5371,0.487,-0.4686
