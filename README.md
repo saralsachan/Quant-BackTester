@@ -73,6 +73,13 @@ Week 0: Environment setup — in progress.
 ### Week4, Day 4
 - Added different tests for costs
 - Found a pandas behaviour - NaN + NaN == 0 (using sum())
+##### Testing command 
+    """RUNNING THE TEST- uv run pytest tests/ -v
+    uv - pyhton project manager(more efficient than pip)
+    run - command 
+    pytest - python testing framework
+    tests/ - which file to look at for tests functions
+    -v -> verbos mode (orignally the output is like ...F. , . for passsed, F for failed)"""
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).

@@ -83,4 +83,3 @@ def test_buy_and_hold_costs_only_on_entry():
     assert costs.iloc[4] == 0
     
     
-    """RUNNING THE TEST- uv run pytest tests/ -v"""
