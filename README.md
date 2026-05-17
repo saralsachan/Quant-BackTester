@@ -70,6 +70,9 @@ Week 0: Environment setup — in progress.
 - Applied cost to all other 4 strategies
 - Reported gross_returns and net_returns along with sharpe ratios, max drwadowns, cost_drags of each strategy
 
+### Week4, Day 4
+- Added different tests for costs
+- Found a pandas behaviour - NaN + NaN == 0 (using sum())
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).
