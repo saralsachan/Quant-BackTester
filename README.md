@@ -80,6 +80,16 @@ Week 0: Environment setup — in progress.
     pytest - python testing framework
     tests/ - which file to look at for tests functions
     -v -> verbos mode (orignally the output is like ...F. , . for passsed, F for failed)"""
+
+### Week 5, Day 1 
+
+- Understanding walk-forward analysis
+- Train_test_split strategy does not work on financial data since every next day as very much dependent on previous day
+  randomly shuffiling the data and using it to train the model will result is overfitting when tested on testing set because both data sets are nearly very identical.
+- We'll do - training of data for 5 yrs window -> testing for next 1 yr -> shifting the windows by 1 yr -> repeat  
+- Acknowledging LIMITAATION- Nifty 50 survivourship bias.
+
+
 ## Tech Stack
 
 Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).
