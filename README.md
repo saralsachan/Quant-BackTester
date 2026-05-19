@@ -89,6 +89,10 @@ Week 0: Environment setup — in progress.
 - We'll do - training of data for 5 yrs window -> testing for next 1 yr -> shifting the windows by 1 yr -> repeat  
 - Acknowledging LIMITAATION- Nifty 50 survivourship bias.
 
+### Week 5, Day 2
+
+- Added walk_forward_slipts function that divides the dates into testing and training windows
+
 
 ## Tech Stack
 
