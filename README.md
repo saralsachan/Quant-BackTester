@@ -91,8 +91,14 @@ Week 0: Environment setup — in progress.
 
 ### Week 5, Day 2
 
-- Added walk_forward_slipts function that divides the dates into testing and training windows
+- Added walk_forward_splits function that divides the dates into testing and training windows
 
+### Week 5, Day 3
+
+- Added walk_forward evaluate function
+- Applied Walk_forward to 3 strategies (momentum, buy and hold, moving average crossover)
+
+##### Decided to switch to machine learning 
 
 ## Tech Stack
 

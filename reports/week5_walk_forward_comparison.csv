@@ -1,0 +1,4 @@
+,is_return,oos_return,is_sharpe,oos_sharpe,sharpe_decay
+Buy & Hold Reliance,0.2079,0.1268,0.5322,0.2245,0.3077
+MA Crossover Reliance,0.1138,-0.0107,0.2154,-0.2776,0.493
+Momentum top-5,0.1702,0.1779,0.487,0.4474,0.0396

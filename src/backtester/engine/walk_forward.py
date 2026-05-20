@@ -34,3 +34,22 @@ def walk_forward_splits(dates, train_years=5, test_years=1):
         
         fold_start = fold_start + test_days  # Roll forward by one test period
 
+
+def walk_forward_evaluate(strategy_returns, train_years=5, test_years=1):
+    """Evaluate strategy returns out-of-sample using walk-forward analysis.
+    
+    strategy_returns: a Series of daily strategy returns over the full period.
+    train_years: years of warmup/training per fold (default 5).
+    test_years: years of out-of-sample test per fold (default 1).
+    
+    Returns the stitched-together out-of-sample return series.
+    """
+    out_of_sample_pieces = []
+    
+    for train, test in walk_forward_splits(strategy_returns.index, train_years, test_years):
+        # Slice the strategy's returns to just the test window
+        test_returns = strategy_returns.loc[test.min():test.max()]
+        out_of_sample_pieces.append(test_returns)
+    
+    # Stitch all test windows together
+    return pd.concat(out_of_sample_pieces)
