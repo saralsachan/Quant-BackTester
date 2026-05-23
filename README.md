@@ -99,6 +99,19 @@ Week 0: Environment setup — in progress.
 - Applied Walk_forward to 3 strategies (momentum, buy and hold, moving average crossover)
 
 ##### Decided to switch to machine learning 
+### Week 5, Day 4
+
+- Feature Engineering,  Built compute_features and compute_target functions
+- 5 features per (stock, month): mom_12m, reversal_1m, mom_12_1, vol_6m, mom_3m
+- Target: binary, 1 if stock beats median next-month return
+
+### Week 5, Day 5
+
+- Built train_and_predict() and ml_momentum_positions()
+- Used logistic regression with StandardScaler. 5 features, 1 binary target.
+- Built train_and_predict() and ml_momentum_positions()
+- Used logistic regression with StandardScaler. 5 features, 1 binary target.
+
 
 ## Tech Stack
 
