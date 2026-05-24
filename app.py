@@ -5,6 +5,7 @@ sys.path.insert(0, "src")
 
 import streamlit as st
 import pandas as pd
+import plotly.graph_objects as go
 
 from backtester.data.loader import load_multiple_tickers, get_close_prices
 from backtester.data.universes import NIFTY_50
@@ -31,15 +32,7 @@ def load_universe():
 
 
 def run_strategy(strategy_name, prices, apply_costs_flag, **params):
-    """Run the chosen strategy and return its return series.
-    
-    strategy_name: which strategy to run.
-    prices: the price DataFrame.
-    apply_costs_flag: whether to subtract transaction costs.
-    **params: strategy-specific parameters (top_n, ticker, etc.).
-    
-    Returns the daily return series (gross or net depending on apply_costs_flag).
-    """
+    """Run the chosen strategy and return its return series."""
     asset_returns = daily_returns(prices)
     
     if strategy_name == "Buy & Hold":
@@ -71,7 +64,7 @@ def run_strategy(strategy_name, prices, apply_costs_flag, **params):
         return gross_returns, positions
 
 
-# Sidebar
+# --- Sidebar ---
 st.sidebar.header("Strategy Settings")
 
 strategy_name = st.sidebar.selectbox(
@@ -79,7 +72,6 @@ strategy_name = st.sidebar.selectbox(
     ["Buy & Hold", "Momentum top-N", "MA Crossover"],
 )
 
-# Show parameters specific to each strategy
 if strategy_name == "Buy & Hold":
     selected_ticker = st.sidebar.selectbox(
         "Stock",
@@ -101,14 +93,19 @@ elif strategy_name == "MA Crossover":
 apply_costs = st.sidebar.checkbox("Apply transaction costs", value=True)
 
 
-
-# Main area
+# --- Universe section ---
 st.subheader("Universe")
 
 with st.spinner("Loading data..."):
     prices = load_universe()
-    
-    # Collect parameters based on strategy
+
+st.write(
+    f"Loaded **{prices.shape[1]} stocks** from "
+    f"{prices.index.min().date()} to {prices.index.max().date()}"
+)
+
+
+# --- Strategy parameters ---
 if strategy_name == "Buy & Hold":
     params = {"ticker": selected_ticker}
 elif strategy_name == "Momentum top-N":
@@ -120,21 +117,103 @@ elif strategy_name == "MA Crossover":
         "long_window": long_window,
     }
 
-# Run the strategy
+
+# --- Run strategy ---
 with st.spinner("Running strategy..."):
     strategy_returns, positions = run_strategy(strategy_name, prices, apply_costs, **params)
 
-# Show some basic info
-st.subheader("Strategy Returns")
-# Performance report
-st.subheader("Performance Metrics")
-report = performance_report(strategy_returns.dropna())
 
-# Convert to a DataFrame for nicer display
-report_df = pd.DataFrame.from_dict(report, orient="index", columns=["Value"])
-report_df["Value"] = report_df["Value"].apply(lambda v: f"{v:.4f}")
-st.dataframe(report_df)
-st.write(f"Number of return days: {strategy_returns.dropna().shape[0]}")
-st.write(f"First valid date: {strategy_returns.first_valid_index().date()}")
+# --- Metrics + info side by side ---
+col1, col2 = st.columns([1, 2])
 
-st.write(f"Loaded **{prices.shape[1]} stocks** from {prices.index.min().date()} to {prices.index.max().date()}")
+with col1:
+    st.subheader("Performance Metrics")
+    report = performance_report(strategy_returns.dropna())
+    report_df = pd.DataFrame.from_dict(report, orient="index", columns=["Value"])
+    report_df["Value"] = report_df["Value"].apply(lambda v: f"{v:.4f}")
+    st.dataframe(report_df, use_container_width=True)
+
+with col2:
+    st.subheader("Strategy Info")
+    st.write(f"**Strategy:** {strategy_name}")
+    st.write(f"**Costs applied:** {apply_costs}")
+    st.write(f"**Number of trading days:** {strategy_returns.dropna().shape[0]}")
+    st.write(f"**First valid date:** {strategy_returns.first_valid_index().date()}")
+    st.write(f"**Last date:** {strategy_returns.last_valid_index().date()}")
+
+
+# --- Compute equity curve, drawdown, and benchmark ---
+returns_clean = strategy_returns.dropna()
+equity_curve = (1 + returns_clean).cumprod()
+running_peak = equity_curve.cummax()
+drawdown = (equity_curve - running_peak) / running_peak
+
+asset_returns_for_benchmark = daily_returns(prices)
+
+if strategy_name == "MA Crossover":
+    ticker = params["ticker"]
+    benchmark_returns = asset_returns_for_benchmark[ticker]
+    benchmark_label = f"Buy & Hold {ticker}"
+else:
+    benchmark_returns = asset_returns_for_benchmark.mean(axis=1)
+    benchmark_label = "Equal-weight basket"
+
+benchmark_equity = (1 + benchmark_returns.dropna()).cumprod()
+
+
+# --- Equity curve chart with benchmark ---
+st.subheader("Equity Curve vs Benchmark")
+
+fig_equity = go.Figure()
+fig_equity.add_trace(
+    go.Scatter(
+        x=equity_curve.index,
+        y=equity_curve.values,
+        mode="lines",
+        name=strategy_name,
+        line=dict(color="steelblue", width=2),
+    )
+)
+fig_equity.add_trace(
+    go.Scatter(
+        x=benchmark_equity.index,
+        y=benchmark_equity.values,
+        mode="lines",
+        name=benchmark_label,
+        line=dict(color="gray", width=1.5, dash="dash"),
+    )
+)
+fig_equity.update_layout(
+    title=f"Value of ₹1 invested — {strategy_name} vs {benchmark_label}",
+    xaxis_title="Date",
+    yaxis_title="Value (₹)",
+    hovermode="x unified",
+    height=450,
+)
+st.plotly_chart(fig_equity, use_container_width=True)
+
+
+# --- Drawdown chart ---
+st.subheader("Drawdown")
+
+fig_dd = go.Figure()
+fig_dd.add_trace(
+    go.Scatter(
+        x=drawdown.index,
+        y=drawdown.values,
+        mode="lines",
+        name="Drawdown",
+        line=dict(color="red", width=1),
+        fill="tozeroy",
+        fillcolor="rgba(255, 0, 0, 0.2)",
+    )
+)
+fig_dd.update_layout(
+    title=f"Drawdown over time — {strategy_name}",
+    xaxis_title="Date",
+    yaxis_title="Drawdown",
+    yaxis_tickformat=".0%",
+    hovermode="x unified",
+    height=300,
+)
+st.plotly_chart(fig_dd, use_container_width=True)
