@@ -87,7 +87,7 @@ Week 0: Environment setup — in progress.
 - Train_test_split strategy does not work on financial data since every next day as very much dependent on previous day
   randomly shuffiling the data and using it to train the model will result is overfitting when tested on testing set because both data sets are nearly very identical.
 - We'll do - training of data for 5 yrs window -> testing for next 1 yr -> shifting the windows by 1 yr -> repeat  
-- Acknowledging LIMITAATION- Nifty 50 survivourship bias.
+- Acknowledging LIMITATION- Nifty 50 survivourship bias.
 
 ### Week 5, Day 2
 
@@ -100,9 +100,16 @@ Week 0: Environment setup — in progress.
 
 ##### Decided to switch to machine learning 
 ### Week 5, Day 4
-
+- Till now the momentum startegy was simple - based on the trailing 12 month returns chose the stocks to buy. But that is  alot less info. 
+My objective here is to optimize the startegy by evaluating the stocks on various more metrics and come up with a better approach to momentum strategy.
 - Feature Engineering,  Built compute_features and compute_target functions
-- 5 features per (stock, month): mom_12m, reversal_1m, mom_12_1, vol_6m, mom_3m
+- 5 features per (stock, month): mom_12m, reversal_1m, mom_12_1, vol_6m, mom_3m <br>
+
+12-month return: How much has this stock gained over the past year?
+1-month return: How much did it gain just last month?
+12-1 momentum: How much did it gain over the past year, not counting the most recent month?
+6-month volatility: How wildly has it been swinging recently?
+3-month return: How much did it gain over the past three months?
 - Target: binary, 1 if stock beats median next-month return
 
 ### Week 5, Day 5
