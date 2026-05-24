@@ -119,10 +119,19 @@ My objective here is to optimize the startegy by evaluating the stocks on variou
 - Built train_and_predict() and ml_momentum_positions()
 - Used logistic regression with StandardScaler. 5 features, 1 binary target.
 
+### Week 6 , Day 1
+- Added basic streamlit application
+- Loading tickers and selecting the strategy
+- Added the st.chache decorator to avaoid refreshing and downloading the whole complete dataset again and again.
+
+### Week 6, Day 2
+- Established connection between actual backend of strategies with the streamlit
+- Deployed the three strategies(Buy & Hold, MAC, Momentum)
+- Dashboards shows the performance report of each strategy
 
 ## Tech Stack
 
-Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit (planned).
+Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit, Scikit Learn.
 
 ## Roadmap
 
