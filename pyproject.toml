@@ -35,3 +35,6 @@ ignore = ["PLR0913"]
 python_version = "3.12"
 strict = true
 ignore_missing_imports = true
+
+[tool.vercel]
+entrypoint = "app:app"

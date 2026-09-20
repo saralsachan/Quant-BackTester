@@ -129,9 +129,28 @@ My objective here is to optimize the startegy by evaluating the stocks on variou
 - Deployed the three strategies(Buy & Hold, MAC, Momentum)
 - Dashboards shows the performance report of each strategy
 
-## Tech Stack
+## Local dashboard
 
-Python 3.12, pandas, NumPy, yfinance, Plotly, Streamlit, Scikit Learn.
+```bash
+streamlit run streamlit_app.py
+```
+
+Or via the ASGI entrypoint used on Vercel:
+
+```bash
+python app.py
+```
+
+## Deploy on Vercel
+
+This dashboard is a Streamlit app exposed as an ASGI application (`app.py`), which Vercel runs as a Python Function.
+
+1. Push this repo to GitHub.
+2. In [Vercel](https://vercel.com/new), import the repository. Framework detection should pick up Python from `pyproject.toml` / `requirements.txt`.
+3. Deploy with the default build settings (no extra install or start command).
+4. Commit `data/raw/*.parquet` price caches. On Vercel the app **does not download** from yfinance (that would time out); it only uses those files.
+
+Hobby plans cap function duration at 300 seconds. First load of a large universe can be slow because of cold starts.
 
 ## Roadmap
 

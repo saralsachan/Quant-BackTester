@@ -40,6 +40,8 @@ def load_ticker_with_cache(ticker, start, end):
     requested_start = pd.Timestamp(start)
     requested_end = pd.Timestamp(end)
     
+    serverless = bool(os.environ.get("VERCEL"))
+
     # If cache file exists, check if it actually covers what we need
     if os.path.exists(cache_file):
         cached = pd.read_parquet(cache_file)
@@ -55,12 +57,18 @@ def load_ticker_with_cache(ticker, start, end):
             if covers_start and covers_end:
                 print(f"Loading {ticker} from cache ({cached_start.date()} to {cached_end.date()})")
                 return cached.loc[start:end]
+            elif serverless:
+                print(f"Using partial cache for {ticker} on Vercel")
+                return cached
             else:
                 print(f"Cache for {ticker} doesn't cover requested range:")
                 print(f"  Cached:    {cached_start.date()} to {cached_end.date()}")
                 print(f"  Requested: {requested_start.date()} to {requested_end.date()}")
                 print(f"  Re-downloading...")
     
+    if serverless:
+        raise ValueError(f"No cached data for {ticker}")
+
     # Download fresh — and download a buffer beyond the request, so future requests
     # for slightly different ranges can still use the cache
     print(f"Downloading {ticker}")

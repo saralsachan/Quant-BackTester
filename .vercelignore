@@ -1,0 +1,11 @@
+.venv
+venv
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.ipynb_checkpoints
+**/*.ipynb
+.idea
+.vscode
+tests
+backtester.code-workspace

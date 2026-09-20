@@ -14,10 +14,7 @@ venv/
 # Jupyter
 .ipynb_checkpoints/
 
-# Data (don't commit large files to git)
-data/raw/*
 data/processed/*
-!data/raw/.gitkeep
 !data/processed/.gitkeep
 
 # IDE
